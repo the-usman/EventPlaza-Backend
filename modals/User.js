@@ -17,6 +17,14 @@ const User= new Schema ({
     Date : {
         type : Date,
         default : Date.now()
+    },
+    type:{
+        type:String,
+        default : "User"
+    },
+    image : {
+        type:String,
+        default: "defualt.png"
     }
 })
 

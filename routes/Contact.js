@@ -19,6 +19,7 @@ router.post('/', fetchUser, async (req, res) => {
         const transporter = nodemailer.createTransport({
             host: 'smtp.' + server,
             port: 465, 
+            secure : true,
             auth: {
                 user: config.email ,
                 pass: config.paasword
@@ -31,12 +32,18 @@ router.post('/', fetchUser, async (req, res) => {
         });
 
         const mailOptions = {
-            from: "uj123243@gmail.com",
+            from: config.email,
             to: email,
             subject: "Thanks for contacting us!",
             text: "Thanks for contacting us!"
         };
         success = true
+        const adimSended = {
+            from: config.email,
+            to: config.email,
+            subject: "A User Try to contact us",
+            text: "Message is " + req.body.message
+        }
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -44,7 +51,15 @@ router.post('/', fetchUser, async (req, res) => {
                 res.status(500).json({ error: "Failed to send email" });
             } else {
                 console.log('Email sent: ' + info.response);
-                res.json({success, contact });
+                return res.json({success, contact });
+            }
+        });
+        transporter.sendMail(adimSended, function (error, info) {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ error: "Failed to send email" });
+            } else {
+                console.log('Email sent: ' + info.response);
             }
         });
     } catch (error) {

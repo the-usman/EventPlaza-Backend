@@ -1,32 +1,37 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose
 
-const post = new Schema({
-    title:{
-        type:String,
-        required : true
-    },
-    description :
-    {
-        type : String,
-        required : true
-    },
-    tag : {
-        type: String,
-        defualt : "default"
-    },
-    ticketPrice : 
-    {
-        type:Number,
-        defualt : 0
-    },
-    Date :
-    {
-        type: Date,
-        default : Date.now()
-    }
+const postSchema = new mongoose.Schema({
+  title: { 
+    type: String, 
+    required: true 
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  image: {
+    type: String,
+    default: "defualt.png"
+  },
+  location: {
+    type: String,
+    required: true
+  },
+  Date: {
+    type: Date,
+    default: Date.now()
+  },
+  lastDate: {
+    type: Date,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  }
 
-})
+});
 
+const Post = mongoose.model('Post', postSchema);
 
-module.exports = mongoose.model('post', post)
+module.exports = Post;
