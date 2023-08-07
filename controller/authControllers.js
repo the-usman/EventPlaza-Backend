@@ -26,7 +26,6 @@ const createUser = async (req, res) => {
             email: req.body.email,
             password: secPass
         })
-
         const data = {
             user: {
                 id: newUser.id
@@ -35,7 +34,6 @@ const createUser = async (req, res) => {
 
         const token = jwt.sign(data, JWT_SECRET)
         success = true
-
         res.json({ success, token })
     } catch (error) {
         console.log("Error Occurred", error)

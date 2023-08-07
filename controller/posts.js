@@ -51,7 +51,7 @@ const addImage = async (req, res) => {
         }
         success = true;
 
-        res.status(200).json({ success, message: "Image successfully added" });
+        res.status(200).json({ success, updatePost});
     } catch (error) {
         console.log(error);
         res.status(500).json({ success, error: "Internal server error" });
@@ -78,7 +78,7 @@ const updatePost = async (req, res) => {
         if (price) (newObject.price = price)
         const updatedPost = await Post.findByIdAndUpdate(id, { $set: newObject }, { new: true })
         success = true;
-        res.status(200).json({ success, message: "Updated successfully" })
+        res.status(200).json({ success, updatedPost })
     } catch (error) {
         console.log(error);
         res.status(500).json({ success, error: "Internal server error" });
@@ -113,7 +113,7 @@ const deletePost = async (req, res) => {
         }
         const deletePost = await Post.findByIdAndDelete(id);
         success = true;
-        res.status(200).json({ success, message: "Post Deleted Successfully" });
+        res.status(200).json({ success, deletePost });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success, error: "Internal server error" });
