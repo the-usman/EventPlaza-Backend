@@ -15,7 +15,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', require('./routes/autification'));
 app.use('/api/contact', require('./routes/Contact'));
 app.use('/api/post', require('./routes/post'));
-app.use('/api.favourite', require('./routes/favourite'));
+app.use('/api/favourite', require('./routes/favourite'));
 app.use('/api/reminme', require('./routes/remindMe'));
 app.use('/api/book', require('./routes/book'));
 

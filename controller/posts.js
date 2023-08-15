@@ -9,10 +9,10 @@ const addPost = async (req, res) => {
     if (!error.isEmpty())
         return res.status(400).json({ success, error })
     try {
-        const adim = Adim.findById(req.user.id)
+        const adim = await Adim.findById(req.user.id);
         if (!adim)
-            return res.status(400).json({ success, error: "Unathurized action" })
-
+            return res.status(400).json({ success, error: "Unauthorized action" });
+        
         console.log(req.body.title, req.body.content, req.body.date, req.body.location, req.body.price)
         const post = await Post.create(
             {
@@ -20,11 +20,14 @@ const addPost = async (req, res) => {
                 content: req.body.content,
                 lastDate: req.body.date,
                 location: req.body.location,
-                price: req.body.price
+                price: req.body.price,
+                tag : req.body.tag,
+                admin : req.user.id,
+                // companyName : adim.email
             }
         )
         success = true;
-        res.status(200).json({ success, message: "Post Successully created", id: post.id })
+        res.status(200).json({ success, post })
     } catch (error) {
         console.log(error)
         res.status(500).json({ success, error: "Internal server error" })
@@ -85,7 +88,7 @@ const updatePost = async (req, res) => {
     }
 }
 
-const deletedFile = 'C:\\Users\\lenovo\\Desktop\\EventManagment\\back-end\\uploads';
+const deletedFile = 'C:\\Users\\lenovo\\Desktop\\EventManagment\\back-end\\uploads\\post';
 const deletePost = async (req, res) => {
     const id = req.params.id;
     let success = false;
@@ -99,8 +102,7 @@ const deletePost = async (req, res) => {
         if (!post)
             return res.status(400).json({ success, error: "Post not Exist" })
         const filenameToDelete = 'filename.jpg';
-
-        const filePath = path.join(deletedFile, `${id}.png`);
+        const filePath = path.join(deletedFile, `${id}.${post.image.split(".")[1]}`);
         if (fs.existsSync(filePath)) {
             try {
                 fs.unlinkSync(filePath);
@@ -123,15 +125,31 @@ const deletePost = async (req, res) => {
 const getPosts = async (req, res) => {
     let success = false;
     try {
-        const page = req.body.page || 1;
+        const page = req.params.page || req.body.page || 2;
         const numOfPost = req.body.numOfPost || 5;
         const skipCount = (page - 1) * numOfPost;
+        const totalCount = await Post.countDocuments();
         const allPost = await Post.find().skip(skipCount).limit(numOfPost);
         success = true;
-        res.status(200).json({success, allPost})
+        res.status(200).json({ success, allPost, length: totalCount });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success, error: "Internal server error" });
+    }
+};
+
+const getEditPost = async (req, res) => {
+    try {
+        const admin = await Adim.findById(req.user.id);
+        if (!admin) {
+            return res.status(400).json({ success: false, error: "Unathorized Action" });
+        }
+        
+        const posts = await Post.find({ admin: req.user.id });
+        res.status(200).json({ success: true, posts });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, error: "Internal server error" });
     }
 }
 
@@ -140,5 +158,6 @@ module.exports = {
     addImage,
     updatePost,
     deletePost,
-    getPosts
+    getPosts,
+    getEditPost
 }

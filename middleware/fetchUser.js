@@ -4,12 +4,13 @@ const JWT_SECRET = config.JWT_SECRET
 
 const fetchUser = (req, res, next) => {
     const token = req.header('token');
-    let success = false; 
+    let success = false;
     if (!token)
-        return res.status(400).json({ success, error: "Please auhticate with the coorect token" })
+        return res.status(400).json({ success, error: "Please auhticate with the correct token" })
     try {
         const data = jwt.verify(token, JWT_SECRET)
-        req.user = data.user
+        if (data)
+            req.user = data.user
     } catch (error) {
         console.log("Error Ouccred", error)
         res.status(500).json({ success, error: "Internal Server error" })

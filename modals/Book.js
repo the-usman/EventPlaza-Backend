@@ -10,6 +10,26 @@ const Book = new Schema({
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'post'
+    },
+    status : {
+        type : String,
+        default : "Pending"
+    },
+    reason : {
+        type : String,
+        default : ""
+    },
+    title : {
+        type : String,
+        required : true
+    },
+    location : {
+        type : String,
+        required : true
+    },
+    lastdate : {
+        type : Date,
+        required : true
     }
 })
 

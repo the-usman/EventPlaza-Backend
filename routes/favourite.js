@@ -5,6 +5,6 @@ const router = require('express').Router();
 
 router.post('/addfavourite/:id', fetchUser, addFavorite)
 router.get('/getfavourite', fetchUser, getFavorite)
-router.delete('/removefavourite/:id', fetchUser, deleteFavorite)
+router.post('/removefavourite/:id', fetchUser, deleteFavorite)
 
 module.exports = router

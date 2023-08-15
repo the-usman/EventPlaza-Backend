@@ -19,9 +19,13 @@ const AdimSchema = new Schema(
             type: Date,
             default: Date.now()
         },
+        image :{
+            type : String,
+            default : "default.png"
+        },
         type:{
             type:String,
-            default:"Adim"
+            default:"admin"
         }
     }
 )

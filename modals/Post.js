@@ -26,10 +26,17 @@ const postSchema = new mongoose.Schema({
     required: true
   },
   price: {
-    type: Number,
+    type: String,
     required: true
+  },
+  tag : {
+    type : String,
+    default : "Default"
+  },
+  admin : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'adim'
   }
-
 });
 
 const Post = mongoose.model('Post', postSchema);
